@@ -19,17 +19,20 @@ public class CustomTeleportation : MonoBehaviour {
 
     void ShowTeleportationRay()
     {
-        interactorRay.enabled = true;
+        if (gameObject.activeSelf)
+            interactorRay.enabled = true;
     }
 
     void HideTeleportationRay()
     {
-        interactorRay.enabled = false;
+        if (gameObject.activeSelf)
+            interactorRay.enabled = false;
     }
 
     void HideTeleportationRayDelayed()
     {
-        StartCoroutine(DelayHideTeleportation());
+        if (gameObject.activeSelf)
+            StartCoroutine(DelayHideTeleportation());
     }
 
     IEnumerator DelayHideTeleportation(){

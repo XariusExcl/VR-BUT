@@ -27,6 +27,11 @@ public class SettingsApplier : MonoBehaviour
     public ActionBasedContinuousTurnProvider continuousTurnProvider;
     public ActionBasedSnapTurnProvider snapTurnProvider;
     
+    void Start()
+    {
+        ApplySettingsToObjects();
+    }
+
     public void ApplySettingsToObjects()
     {
         Debug.Log($"RotationMode {rotationMode.value}, MovementMode {movementMode.value}");

@@ -9,6 +9,7 @@ public class CustomTeleportation : MonoBehaviour {
     public InputActionProperty initiateTeleportAction;
     public InputActionProperty cancelTeleportAction;
     public XRRayInteractor interactorRay;
+    public GameObject reticle;
 
     void Start()
     {
@@ -20,13 +21,19 @@ public class CustomTeleportation : MonoBehaviour {
     void ShowTeleportationRay()
     {
         if (gameObject.activeSelf)
+        {
             interactorRay.enabled = true;
+            reticle.SetActive(true);
+        }
     }
 
     void HideTeleportationRay()
     {
         if (gameObject.activeSelf)
+        {
             interactorRay.enabled = false;
+            reticle.SetActive(false);
+        }
     }
 
     void HideTeleportationRayDelayed()

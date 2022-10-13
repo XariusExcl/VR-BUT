@@ -439,7 +439,7 @@
                     "path": "<XRController>{LeftHand}/Primary2DAxis",
                     "interactions": "Sector(directions=2)",
                     "processors": "",
-                    "groups": "Noncontinuous Move;Generic XR Controller",
+                    "groups": "Generic XR Controller",
                     "action": "Teleport Mode Activate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -869,7 +869,7 @@
                     "path": "<XRController>{RightHand}/Primary2DAxis",
                     "interactions": "Sector(directions=2)",
                     "processors": "",
-                    "groups": "Noncontinuous Move;Generic XR Controller",
+                    "groups": "Generic XR Controller",
                     "action": "Teleport Mode Activate",
                     "isComposite": false,
                     "isPartOfComposite": false

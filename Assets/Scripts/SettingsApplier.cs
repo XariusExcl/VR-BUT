@@ -12,40 +12,55 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class SettingsApplier : MonoBehaviour
 {
-    [Header("Références IU")]
-    public TMP_Dropdown rotationMode;
-    public TMP_Dropdown movementMode;
-    
     [Header("Références Scène")]
-    public TeleportationProvider teleportationProvider;
     public GameObject leftRayTeleportationInteractor;
     public GameObject rightRayTeleportationInteractor;
     
-    [Space(10)]
-    
-    public ActionBasedContinuousMoveProvider continuousMoveProvider;
-    public ActionBasedContinuousTurnProvider continuousTurnProvider;
-    public ActionBasedSnapTurnProvider snapTurnProvider;
+    ActionBasedContinuousMoveProvider continuousMoveProvider;
+    ActionBasedContinuousTurnProvider continuousTurnProvider;
+    ActionBasedSnapTurnProvider snapTurnProvider;
+    TeleportationProvider teleportationProvider;
     
     void Start()
     {
-        ApplySettingsToObjects();
+        continuousMoveProvider = GetComponent<ActionBasedContinuousMoveProvider>();
+        continuousTurnProvider = GetComponent<ActionBasedContinuousTurnProvider>();
+        snapTurnProvider = GetComponent<ActionBasedSnapTurnProvider>();
+        teleportationProvider = GetComponent<TeleportationProvider>();
+
+        SetLocomotionMode(0);
+        SetTurnMode(0);
     }
 
-    public void ApplySettingsToObjects()
+    public void SetLocomotionMode(int value)
     {
-        Debug.Log($"RotationMode {rotationMode.value}, MovementMode {movementMode.value}");
-        
-            // Movement mode 0 = Continu, 1 = Téléportation
-        teleportationProvider.enabled = movementMode.value == 1;
-        leftRayTeleportationInteractor.SetActive(movementMode.value == 1);
-        rightRayTeleportationInteractor.SetActive(movementMode.value == 1);
-        continuousMoveProvider.enabled = movementMode.value == 0;
-    
-            // Rotation mode 0 = Continu, 1 = à-coups
-        continuousTurnProvider.enabled = rotationMode.value == 0;
-        snapTurnProvider.enabled = rotationMode.value == 1;
-    
-        Debug.Log("Settings Applied!");
+        switch (value) {
+            case 0:
+                continuousMoveProvider.enabled = true;
+                teleportationProvider.enabled = false;
+                leftRayTeleportationInteractor.SetActive(false);
+                rightRayTeleportationInteractor.SetActive(false);
+            break;
+            case 1:
+                teleportationProvider.enabled = true;
+                leftRayTeleportationInteractor.SetActive(true);
+                rightRayTeleportationInteractor.SetActive(true);
+                continuousMoveProvider.enabled = false;
+            break;
+        }
+    }
+
+    public void SetTurnMode(int value)
+    {
+        switch (value) {
+            case 0:
+                continuousTurnProvider.enabled = true;
+                snapTurnProvider.enabled = false;
+            break;
+            case 1:
+                snapTurnProvider.enabled = true;
+                continuousTurnProvider.enabled = false;
+            break;
+        }
     }
 }

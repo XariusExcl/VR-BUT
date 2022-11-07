@@ -20,7 +20,7 @@ public class SettingsApplier : MonoBehaviour
     ActionBasedContinuousTurnProvider continuousTurnProvider;
     ActionBasedSnapTurnProvider snapTurnProvider;
     TeleportationProvider teleportationProvider;
-    
+
     void Start()
     {
         continuousMoveProvider = GetComponent<ActionBasedContinuousMoveProvider>();

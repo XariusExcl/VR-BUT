@@ -7,9 +7,6 @@ public class GameManager : MonoBehaviour
 {
     void Awake()
     {
-        /*
-        OVRManager.fixedFoveatedRenderingLevel = FixedFoveatedRenderingLevel.High; // it's the maximum foveation level
-        OVRManager.useDynamicFixedFoveatedRendering = true;
-        */
+        // SetFoveationLevel(3);
     }
 }

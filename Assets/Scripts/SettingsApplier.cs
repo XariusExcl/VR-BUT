@@ -29,7 +29,7 @@ public class SettingsApplier : MonoBehaviour
         teleportationProvider = GetComponent<TeleportationProvider>();
 
         SetLocomotionMode(0);
-        SetTurnMode(0);
+        SetTurnMode(1);
     }
 
     public void SetLocomotionMode(int value)

@@ -1373,6 +1373,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "XRI LeftHand Control",
+            "id": "0ae35375-db4b-40a7-abb9-2bb700b400fb",
+            "actions": [
+                {
+                    "name": "Primary",
+                    "type": "Button",
+                    "id": "af69c9cb-9819-4768-8b2d-edf3ba1de144",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Secondary",
+                    "type": "Button",
+                    "id": "193a7868-6ccb-4b96-8054-7fb2939d2f0c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cf9bed84-9f0d-4239-8f8f-1b7da84e7137",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Primary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "daa4687b-aae3-4e8c-9f72-2d409f1eb27b",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Secondary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

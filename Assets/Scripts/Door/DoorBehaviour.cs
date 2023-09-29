@@ -102,8 +102,14 @@ public class DoorBehaviour : MonoBehaviour
     public void CheckIfCorrectKey(int ID)
     {
         if (ID == lockID) {
-            isLocked = false;
-            OnDoorUnlock();
+            UnlockDoor();
         }
+    }
+
+    public void UnlockDoor()
+    {
+        // Todo : sfx?
+        isLocked = false;
+        OnDoorUnlock?.Invoke();
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.XR.Oculus;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +37,21 @@ public class GameManager : MonoBehaviour
     {
         amphi.SetActive(false);
         serverRoomDoor.OnDoorUnlock += ServerRoomUnlockHandler;
+        UpdateState();
+    }
+
+    void UpdateState()
+    {
+        switch(level1States)
+        {
+            case Level1States.ServerRoomDoorUnlocked:
+                // Load Amphi
+                amphi.SetActive(true);
+                break;
+            case Level1States.AmphiDoorUnlocked:
+                // Load Level 2
+                break;
+        }
     }
 
     void ServerRoomUnlockHandler()

@@ -14,14 +14,18 @@ public class DoorHandle : MonoBehaviour
     {
         hinge = GetComponent<HingeJoint>();
         grabInteractable = GetComponent<XRGrabInteractable>();
-        
-        lockedLimits = new JointLimits();
-        lockedLimits.min = -20f;
-        lockedLimits.max = 0f;
 
-        unlockedLimits = new JointLimits();
-        unlockedLimits.min = -70f;
-        unlockedLimits.max = 0f;
+        lockedLimits = new JointLimits
+        {
+            min = -20f,
+            max = 0f
+        };
+
+        unlockedLimits = new JointLimits
+        {
+            min = -70f,
+            max = 0f
+        };
     }
 
     public void UpdateHandle(bool isOpened)

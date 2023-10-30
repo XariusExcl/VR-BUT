@@ -14,10 +14,12 @@ public class CodeInputManager : MonoBehaviour
     int[] input = new int[3]{0, 0, 0};
 
     public TMP_Text[] numberDisplays;
+    public TMP_Text title;
 
     public Collider plusButton;
     public Collider minusButton;
     public Collider enterButton;
+    public Collider returnButton;
 
     public void PlusButtonPressed()
     {
@@ -55,11 +57,21 @@ public class CodeInputManager : MonoBehaviour
         }
     }
 
+    public void ReturnButtonPressed()
+    {
+        if(selectorPosition > 0)
+        {
+            selectorPosition--;
+            selector.transform.localPosition -= new Vector3(45f, 0, 0);
+        }
+    }
+
     public void EnableButtons()
     {
         plusButton.enabled = true;
         minusButton.enabled = true;
         enterButton.enabled = true;
+        returnButton.enabled = true;
 
         int i = 0;
         foreach(TMP_Text numberDisplay in numberDisplays)
@@ -79,6 +91,7 @@ public class CodeInputManager : MonoBehaviour
         plusButton.enabled = false;
         minusButton.enabled = false;
         enterButton.enabled = false;
+        returnButton.enabled = false;
     }
 
     void WrongCode()
@@ -93,7 +106,18 @@ public class CodeInputManager : MonoBehaviour
             numberDisplay.text = "X";
             numberDisplay.color = Color.red;
         }
-        Invoke("EnableButtons", 5f);
+        StartCoroutine(WrongCodeCountdown());
+    }
+
+    IEnumerator WrongCodeCountdown()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            title.text = "Réessayez dans " + (30 - i) +"s.";
+            yield return new WaitForSeconds(1f);
+        }
+        title.text = "Entrez le code";
+        EnableButtons();
     }
 
     void ValidCode()

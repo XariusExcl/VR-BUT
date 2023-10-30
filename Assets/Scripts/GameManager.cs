@@ -1,27 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.XR.Oculus;
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
-    public DoorBehaviour serverRoomDoor;
     public GameObject amphi;
+    public static GameManager instance;
 
     [System.Flags]
     public enum Level1States
     {
         None = 0,
         ServerRoomDoorUnlocked = 1,
-        AmphiDoorUnlocked = 2,
+        AmphiDoorUnlocked = 2
     }
     public Level1States level1States;
+
+    public delegate void OnGameStateChangeDelegate(Level1States newState);
+    public static event OnGameStateChangeDelegate OnGameStateChange;
+    public static float completionTime {get; private set;}
 
     void Awake()
     {
         // SetFoveationLevel(3);
-        Unity.XR.Oculus.Utils.EnableDynamicFFR(true);
+        Unity.XR.Oculus.Utils.useDynamicFoveatedRendering = true;
         // Unity.XR.Oculus.Utils.GetFoveationLevel();
         
         float[] rates;
@@ -35,29 +37,46 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (instance != null)
+            Destroy(this.gameObject);
+        instance = this;
+
         amphi.SetActive(false);
-        serverRoomDoor.OnDoorUnlock += ServerRoomUnlockHandler;
         UpdateState();
     }
 
-    void UpdateState()
+    public void LoadNextLevel()
     {
-        switch(level1States)
-        {
-            case Level1States.ServerRoomDoorUnlocked:
-                // Load Amphi
-                amphi.SetActive(true);
-                break;
-            case Level1States.AmphiDoorUnlocked:
-                // Load Level 2
-                break;
-        }
+        completionTime = Time.timeSinceLevelLoad;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    void ServerRoomUnlockHandler()
+    void UpdateState() // Used for loading a specific state when begining play mode
     {
-        // Load Amphi
-        amphi.SetActive(true);
+        if(level1States.HasFlag(Level1States.ServerRoomDoorUnlocked))
+            ServerRoomUnlockHandler();
+        if(level1States.HasFlag(Level1States.AmphiDoorUnlocked))
+            LaptopUnlockHandler();
+    }
+
+    public void ServerRoomUnlockHandler()
+    {
+        Debug.Log("ServerRoomUnlockHandler");
         level1States |= Level1States.ServerRoomDoorUnlocked;
+        amphi.SetActive(true);
+        OnGameStateChange?.Invoke(level1States);
+    }
+
+    public void LaptopUnlockHandler()
+    {
+        Debug.Log("LaptopUnlockHandler");
+        level1States |= Level1States.AmphiDoorUnlocked;
+        OnGameStateChange?.Invoke(level1States);
+    }
+
+    public static void ExitGame()
+    {
+        Debug.Log("Exiting game!");
+        Application.Quit();
     }
 }

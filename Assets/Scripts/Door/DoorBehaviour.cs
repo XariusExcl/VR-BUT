@@ -1,7 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+
+public class OnDoorUnlockEventArgs : EventArgs
+{
+    public bool isKeyInLock;
+}
 
 public class DoorBehaviour : MonoBehaviour
 {
@@ -9,7 +16,7 @@ public class DoorBehaviour : MonoBehaviour
     [Header("Refs")]
     public DoorHandle doorHandle;
     public DoorHandle secondDoorHandle;
-    XRSocketInteractor doorLockInteractor;
+    public DoorLock[] doorLocks;
     Rigidbody rb;
     HingeJoint hinge;
 
@@ -24,9 +31,10 @@ public class DoorBehaviour : MonoBehaviour
     JointLimits doorLimits;
     JointLimits closedDoorLimits;
 
-    // Events
-    public delegate void OnDoorUnlockDelegate();
-    public event OnDoorUnlockDelegate OnDoorUnlock;
+    // Evente
+    public UnityEvent DoorUnlock;
+
+    public static event EventHandler<OnDoorUnlockEventArgs> TriedOpeningDoorEvent;
 
     void Start()
     {
@@ -74,6 +82,11 @@ public class DoorBehaviour : MonoBehaviour
                     UpdateDoor();
                 }
             }
+        } else {
+            if (HandlesHeld() && (doorHandle.IsAtBottomLimit() || (secondDoorHandle != null && secondDoorHandle.IsAtBottomLimit())))
+            {
+                TriedOpeningDoorEvent?.Invoke(this, new OnDoorUnlockEventArgs() { isKeyInLock = IsKeyInLock() });
+            }
         }
     }
 
@@ -110,6 +123,16 @@ public class DoorBehaviour : MonoBehaviour
     {
         // Todo : sfx?
         isLocked = false;
-        OnDoorUnlock?.Invoke();
+        DoorUnlock.Invoke();
+    }
+
+    public bool IsKeyInLock()
+    {
+        foreach (DoorLock doorLock in doorLocks)
+        {
+            if (doorLock.isKeyInLock)
+                return true;
+        }
+        return false;
     }
 }

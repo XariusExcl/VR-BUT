@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 public class LaptopBehaviour : MonoBehaviour
 {
-    public TMP_Text interactableText;
+    public GameObject interactableText;
     public Outline outline;
     public CodeInputManager codeInputManager;
-    public DoorBehaviour leftDoor;
-    public DoorBehaviour rightDoor;
+
+    public GameObject lockScreen;
+    public GameObject codeInputScreen;
 
     public enum State { LockScreen, EnteringCode, Unlocked };
     public State state = State.LockScreen;
 
+    public UnityEvent LaptopUnlock;
+
     void Start()
     {
-        interactableText.text = "Entrer le code";
+        interactableText.SetActive(false);
+        lockScreen.SetActive(true);
+        codeInputScreen.SetActive(false);
         outline.enabled = false;
     }
 
@@ -25,7 +31,7 @@ public class LaptopBehaviour : MonoBehaviour
         if (state == State.LockScreen)
         {
             outline.enabled = true;
-            interactableText.gameObject.SetActive(true);
+            interactableText.SetActive(true);
         }
     }
 
@@ -34,7 +40,7 @@ public class LaptopBehaviour : MonoBehaviour
         if (state == State.LockScreen)
         {
             outline.enabled = false;
-            interactableText.gameObject.SetActive(false);
+            interactableText.SetActive(false);
         }
     }
 
@@ -43,6 +49,9 @@ public class LaptopBehaviour : MonoBehaviour
         if (state == State.LockScreen)
         {
             state = State.EnteringCode;
+            lockScreen.SetActive(false);
+            codeInputScreen.SetActive(true);
+            interactableText.SetActive(false);
             outline.enabled = false;
             gameObject.GetComponent<Collider>().enabled = false;
 
@@ -53,8 +62,7 @@ public class LaptopBehaviour : MonoBehaviour
     public void UnlockComputer()
     {
         state = State.Unlocked;
-        leftDoor.UnlockDoor();
-        rightDoor.UnlockDoor();
+        LaptopUnlock.Invoke();
     }
 
     public void SendDebugMessage()

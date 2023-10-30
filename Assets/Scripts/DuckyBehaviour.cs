@@ -7,7 +7,6 @@ using Unity.XR.CoreUtils;
 public class DuckyBehaviour : MonoBehaviour
 {
     [Header("Refs")]
-    GameManager gameManager;
     Transform player;
     public GameObject positions;
     [Tooltip("Collider used to check if next jump position is in camera frustum.")]
@@ -17,6 +16,7 @@ public class DuckyBehaviour : MonoBehaviour
     Transform[] movePositions;
     Dictionary<Transform, Transform[]> neighboringPositions;
     Transform currentTransform;
+    public bool AI_isFollowingPlayer;
     public float AI_decisionInterval;
     public float AI_moveOdds;
     public float AI_followPlayerOdds;
@@ -24,10 +24,10 @@ public class DuckyBehaviour : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
-        player = GameObject.FindObjectOfType<XROrigin>().transform;
+        GameManager.OnGameStateChange += GameStateChangeHandler;
+        player = FindObjectOfType<XROrigin>().transform;
 
         // pre-process move Positions
         neighboringPositions = new Dictionary<Transform, Transform[]>();
@@ -59,11 +59,22 @@ public class DuckyBehaviour : MonoBehaviour
         // === END DEBUG ===
     }
 
+    void GameStateChangeHandler(GameManager.Level1States newState)
+    {
+        if (newState.HasFlag(GameManager.Level1States.ServerRoomDoorUnlocked)){
+            AI_isFollowingPlayer = true;
+        }
+        if (newState.HasFlag(GameManager.Level1States.AmphiDoorUnlocked)){
+            AI_isFollowingPlayer = false;
+        }
+        Debug.Log($"Ducky AI is now {(AI_isFollowingPlayer ? "following player" : "not following player")}");
+    }
+
     float timer;
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.level1States.HasFlag(GameManager.Level1States.ServerRoomDoorUnlocked))
+        if (AI_isFollowingPlayer)
         {
             // Move
             timer += Time.deltaTime;

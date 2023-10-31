@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class GameManager : MonoBehaviour
 {
     public GameObject amphi;
@@ -20,21 +19,6 @@ public class GameManager : MonoBehaviour
     public static event OnGameStateChangeDelegate OnGameStateChange;
     public static float completionTime {get; private set;}
 
-    void Awake()
-    {
-        // SetFoveationLevel(3);
-        Unity.XR.Oculus.Utils.useDynamicFoveatedRendering = true;
-        // Unity.XR.Oculus.Utils.GetFoveationLevel();
-        
-        float[] rates;
-        Unity.XR.Oculus.Performance.TryGetAvailableDisplayRefreshRates(out rates);
-        
-        Unity.XR.Oculus.Performance.TrySetDisplayRefreshRate(90);
-        
-        float rate;
-        Unity.XR.Oculus.Performance.TryGetDisplayRefreshRate(out rate);
-    }
-
     void Start()
     {
         if (instance != null)
@@ -48,7 +32,7 @@ public class GameManager : MonoBehaviour
     public void LoadNextLevel()
     {
         completionTime = Time.timeSinceLevelLoad;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("EndScene");
     }
 
     void UpdateState() // Used for loading a specific state when begining play mode

@@ -105,8 +105,10 @@ public class DoorBehaviour : MonoBehaviour
     {
         if (isOpened) {
             hinge.limits = doorLimits;
+            rb.isKinematic = true;
         } else {
             hinge.limits = closedDoorLimits;
+            rb.isKinematic = false;
         }
 
         doorHandle.UpdateHandle(isOpened);

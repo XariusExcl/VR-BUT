@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class DoorLock : MonoBehaviour
 {
     XRSocketInteractor socketInteractor;
     DoorBehaviour door;
+    DoorKey lastKeyInserted;
     public bool isKeyInLock;
     public bool isCorrectKey;
 
@@ -20,12 +21,18 @@ public class DoorLock : MonoBehaviour
     public void OnKeyInserted()
     {
         if (socketInteractor.selectTarget.TryGetComponent<DoorKey>(out DoorKey key))
+        {
+            lastKeyInserted = key;
+            lastKeyInserted.ToggleCollider(false);
             CheckIfCorrectKey(key.ID);
+        }
         else Debug.LogWarning("Object inserted in lock is not a Door Key!");
     }
 
     public void OnKeyRemoved()
     {
+        lastKeyInserted.ToggleCollider(true);
+        lastKeyInserted = null;
         isKeyInLock = false;
     }
 

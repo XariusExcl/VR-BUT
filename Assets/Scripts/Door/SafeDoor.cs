@@ -10,6 +10,7 @@ public class SafeDoor : MonoBehaviour
     // Refs
     [Header("Refs")]
     HingeJoint hinge;
+    Rigidbody rb;
 
     // Variables
     [Header("Variables")]
@@ -24,6 +25,7 @@ public class SafeDoor : MonoBehaviour
     {
         // Cache des components
         hinge = GetComponent<HingeJoint>();
+        rb = GetComponent<Rigidbody>();
 
         // Création des contraites physiques "porte ouverte" et "porte fermée"
         doorLimits = new JointLimits();
@@ -42,8 +44,10 @@ public class SafeDoor : MonoBehaviour
     {
         if (isLocked) {
             hinge.limits = closedDoorLimits;
+            rb.isKinematic = true;
         } else {
             hinge.limits = doorLimits;
+            rb.isKinematic = false;
         }
     }
 

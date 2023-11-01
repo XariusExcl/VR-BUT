@@ -16,7 +16,7 @@ public class DoorBehaviour : MonoBehaviour
     [Header("Refs")]
     public DoorHandle doorHandle;
     public DoorHandle secondDoorHandle;
-    public DoorLock[] doorLocks;
+    DoorLock[] doorLocks;
     Rigidbody rb;
     HingeJoint hinge;
 
@@ -31,7 +31,7 @@ public class DoorBehaviour : MonoBehaviour
     JointLimits doorLimits;
     JointLimits closedDoorLimits;
 
-    // Evente
+    // Events
     public UnityEvent DoorUnlock;
 
     public static event EventHandler<OnDoorUnlockEventArgs> TriedOpeningDoorEvent;
@@ -49,6 +49,9 @@ public class DoorBehaviour : MonoBehaviour
 
         closedDoorLimits = new JointLimits();
         closedDoorLimits.min = closedDoorLimits.max = (doorLimits.min + doorLimits.max) / 2f;
+
+
+        doorLocks = GetComponentsInChildren<DoorLock>();
 
         // Initialisation
         isOpened = false;
@@ -103,11 +106,11 @@ public class DoorBehaviour : MonoBehaviour
 
     void UpdateDoor()
     {
-        if (isOpened) {
-            hinge.limits = doorLimits;
+        if (isLocked) {
+            hinge.limits = closedDoorLimits;
             rb.isKinematic = true;
         } else {
-            hinge.limits = closedDoorLimits;
+            hinge.limits = doorLimits;
             rb.isKinematic = false;
         }
 

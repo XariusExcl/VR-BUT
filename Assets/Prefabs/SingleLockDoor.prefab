@@ -361,6 +361,11 @@ MonoBehaviour:
   m_SocketActive: 1
   m_InteractableHoverScale: 1
   m_RecycleDelayTime: 1
+  m_HoverSocketSnapping: 0
+  m_SocketSnappingRadius: 0.1
+  m_SocketScaleMode: 0
+  m_FixedScale: {x: 1, y: 1, z: 1}
+  m_TargetBoundsSize: {x: 1, y: 1, z: 1}
 --- !u!114 &7533667138859830302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae54e735c7401224fa67358c36c7b030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKeyInLock: 0
+  isCorrectKey: 0
 --- !u!1 &6201685291256493772
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,10 +527,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorHandle: {fileID: 6201685292681144801}
   secondDoorHandle: {fileID: 0}
+  doorLocks: []
   isLocked: 1
   doorAngleThreshold: 2
   handleAngleThreshold: 15
   lockID: 0
+  DoorUnlock:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6201685292681144804
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,6 +645,7 @@ MonoBehaviour:
     m_Bits: 1
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
+  m_FocusMode: 1
   m_CustomReticle: {fileID: 0}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
@@ -702,6 +714,18 @@ MonoBehaviour:
   m_SelectExited:
     m_PersistentCalls:
       m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
   m_Activated:
     m_PersistentCalls:
       m_Calls: []
@@ -759,6 +783,10 @@ MonoBehaviour:
   m_SmoothRotation: 0
   m_SmoothRotationAmount: 5
   m_TightenRotation: 0.5
+  m_TrackScale: 1
+  m_SmoothScale: 0
+  m_SmoothScaleAmount: 8
+  m_TightenScale: 0.1
   m_ThrowOnDetach: 1
   m_ThrowSmoothingDuration: 0.25
   m_ThrowSmoothingCurve:

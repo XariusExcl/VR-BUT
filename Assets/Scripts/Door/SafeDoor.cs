@@ -11,6 +11,7 @@ public class SafeDoor : MonoBehaviour
     [Header("Refs")]
     HingeJoint hinge;
     Rigidbody rb;
+    AudioSource audioSource;
 
     // Variables
     [Header("Variables")]
@@ -26,6 +27,7 @@ public class SafeDoor : MonoBehaviour
         // Cache des components
         hinge = GetComponent<HingeJoint>();
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
 
         // Création des contraites physiques "porte ouverte" et "porte fermée"
         doorLimits = new JointLimits();
@@ -53,7 +55,7 @@ public class SafeDoor : MonoBehaviour
 
     public void UnlockDoor()
     {
-        // Todo : sfx?
+        audioSource?.Play();
         isLocked = false;
         DoorUnlock.Invoke();
         UpdateDoor();

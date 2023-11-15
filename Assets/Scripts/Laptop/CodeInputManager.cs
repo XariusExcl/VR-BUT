@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Audio;
 
 
 public class CodeInputManager : MonoBehaviour
 {
-    public LaptopBehaviour laptop;
+    LaptopBehaviour laptop;
+    AudioSource audioSource;
     
     public GameObject selector;
     int selectorPosition = 0;
@@ -20,9 +22,21 @@ public class CodeInputManager : MonoBehaviour
     public Collider minusButton;
     public Collider enterButton;
     public Collider returnButton;
+    
+    [Space(10)]
+
+    public AudioClip[] buttonPressClips;
+    public AudioClip enterButtonPressClip;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        laptop = GetComponentInParent<LaptopBehaviour>();
+    }
 
     public void PlusButtonPressed()
     {
+        PlayButtonSound(0);
         input[selectorPosition] += 1;
         input[selectorPosition] %= 10;
         numberDisplays[selectorPosition].text = input[selectorPosition].ToString();
@@ -30,6 +44,7 @@ public class CodeInputManager : MonoBehaviour
 
     public void MinusButtonPressed()
     {
+        PlayButtonSound(0);
         input[selectorPosition] -= 1;
         if (input[selectorPosition] < 0)
             input[selectorPosition] = 9;
@@ -38,6 +53,7 @@ public class CodeInputManager : MonoBehaviour
 
     public void EnterButtonPressed()
     {
+        PlayButtonSound(1);
         if(selectorPosition < 2)
         {
             selectorPosition++;
@@ -59,6 +75,7 @@ public class CodeInputManager : MonoBehaviour
 
     public void ReturnButtonPressed()
     {
+        PlayButtonSound(1);
         if(selectorPosition > 0)
         {
             selectorPosition--;
@@ -96,8 +113,6 @@ public class CodeInputManager : MonoBehaviour
 
     void WrongCode()
     {
-        // idk add a beep sound
-        
         DisableButtons();
 
         selector.SetActive(false);
@@ -122,13 +137,22 @@ public class CodeInputManager : MonoBehaviour
 
     void ValidCode()
     {
-        // add a beep sound
-
         DisableButtons();
         selector.SetActive(false);
         foreach(TMP_Text numberDisplay in numberDisplays)
         {
             numberDisplay.color = Color.green;
         }
+    }
+
+    void PlayButtonSound(int type = 0)
+    {
+        if (type == 1)
+            audioSource.clip = enterButtonPressClip;
+        else {
+            // Pick a random sound from buttonPress and load it in audioSource.clip
+            audioSource.clip = buttonPressClips[Random.Range(0, buttonPressClips.Length)];
+        }
+        audioSource.Play();
     }
 }

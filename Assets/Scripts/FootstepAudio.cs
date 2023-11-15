@@ -6,7 +6,7 @@ using UnityEngine;
 public class FootstepAudio : MonoBehaviour
 {
     CharacterController characterController;
-    public AudioSource audioSource;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
